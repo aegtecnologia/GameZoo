@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ConsoleTeste
+{
+    public class Gerenciador
+    {
+    }
+    public class Premio
+    {
+        public int Numero { get; private set; }
+        public string Milhar { get; private set; }
+        public string Centena { get; private set; }
+        public string Dezena { get; private set; }
+        public int Grupo { get; private set; }
+
+        public Premio(int numero)
+        {
+            Milhar = numero.ToString("0000");
+            Centena = Milhar.Substring(1);
+            Dezena = Milhar.Substring(2);
+            Grupo = CalculaGrupo();
+        }
+
+        private int CalculaGrupo()
+        {
+            var dezena = Convert.ToInt32(Dezena);
+
+            if (dezena == 0) return 25;
+
+            var mod = dezena % 4;
+
+            if (mod.Equals(0))
+                return dezena / 4;
+            else
+                return dezena / 4 + 1;
+        }
+    }
+    public class Sorteio
+    {
+        //public Premio Premio1 { get; private set; }
+        //public Premio Premio2 { get; private set; }
+        //public Premio Premio3 { get; private set; }
+        //public Premio Premio4 { get; private set; }
+        //public Premio Premio5 { get; private set; }
+        
+       // public IList<Premio> Premios { get; private set; }
+        public IList<string> Milhares { get; private set; }
+        public IList<string> Centenas { get; private set; }
+        public IList<string> Dezenas { get; private set; }
+        public IList<string> Grupos { get; private set; }
+       
+        public Sorteio()
+        {
+           // Premios = new List<Premio>();
+            Milhares = new List<string>();
+            Centenas = new List<string>();
+            Dezenas = new List<string>();
+            Grupos = new List<string>();
+            
+
+            for (int i = 0; i < 5; i++)
+            {
+                var premio = new Premio(Sortear());
+                Milhares.Add(premio.Milhar);
+                Centenas.Add(premio.Centena);
+                Dezenas.Add(premio.Dezena);
+                Grupos.Add(premio.Grupo.ToString("00"));
+            }
+
+            //Premio1 = new Premio(Sortear());
+            //Premio2 = new Premio(Sortear());
+            //Premio3 = new Premio(Sortear());
+            //Premio4 = new Premio(Sortear());
+            //Premio5 = new Premio(Sortear());
+        }
+
+        private int Sortear()
+        {
+            string numero = "";
+
+            for (int i = 0; i < 4; i++)
+            {
+                numero += new Random().Next(9).ToString();
+                System.Threading.Thread.Sleep(5);
+            }
+
+            return Convert.ToInt32(numero);
+        }
+    }
+}
